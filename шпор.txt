@@ -1,0 +1,138 @@
+Category.objects.filter(posts__is_published=0).distinct()
+
+w1.tags.add(t_o) - �������� ���� ������ � �������
+w1.tags.set([t1, t_o, t_b]) - �������� ��������� ������� � �������
+w1.tags.remove(t_o) - ������� ������ �� �������
+w1.tags.all()
+w1.tags.filter(pk__in=[1,3])
+w1.tags.all()[2]
+t1.tags.all()
+t1.tags.add(w2)
+w=_
+
+django-taggit
+
+s1, s2 = Student.objects.filter(id__in=[1, 2])
+
+Women.objects.first()
+Women.objects.order_by('-pk').first()
+Women.objects.last()
+Women.objects.order_by('-pk').last()
+
+Women.objects.earliest('time_create') - ����� ����� ������ ������
+Women.objects.latest('time_update') - ����� ����� ������� ������
+
+--����� ���������� ������
+
+w=Women.objects.get(pk=7)
+In [2]: w
+Out[2]: <Women: Billi Ilish>
+In [3]: w.get_previous_by_time_update()
+Out[3]: <Women: ABBA>
+
+w.get_next_by_time_update() - ��������� ������
+w.get_next_by_time_update(pk__gt=4)
+
+c.posts.exists() - �������� ���������� �� ���� ���� ������
+True
+
+In [29]: c2.posts.count() - ���������� �������
+Out[29]: 3
+ Women.objects.filter(cat_id=2).count()
+
+h=Husband.objects.get(pk=1)
+h.n_count=F('n_count')+1
+h.save()
+
+
+from django.db.models import Value
+h=Husband.objects.all().annotate(is_married=Value(True)) - ��������� ����������� ����
+for i, x in enumerate(h):
+     if i==0:
+         print(list(x.__dict__)[1:])
+     print(list(x.__dict__.values())[1:])
+
+ h=Husband.objects.annotate(is_maried=Value('asd'*3))
+h=Husband.objects.annotate(is_mariot=F('n_count')*3)
+h=Husband.objects.annotate(work_age=F('age')-20)
+h=Husband.objects.annotate(work_age=F('age')-20, salary=F('age')*1.1)
+
+h=Husband.objects.update(n_count=F('n_count')+100)
+
+Person.objects.filter(Q(job='django')|Q(age__gt=30)).update(salary=F('salary')*2)
+
+p.is_published=~F('is_published')
+records = Person.objects.annotate(tax=F('salary')*0.13)
+records = Person.objects.annotate(tax=F('salary')*0.13).filter(Q(age__gt=40)|Q(salary__gt=20000))
+records = Person.objects.annotate(tax=F('salary')*0.13,is_paid=Value(False))
+records = Person.objects.annotate(tax=F('salary')*0.13, is_paid=Value(False)).filter(Q(age__lt=35)|Q(salary__lt=40000))
+
+
+
+
+������������ �������
+from django.db.models import Count, Sum, Avg, Max, Min
+Husband.objects.aggregate(Min('age'))
+Husband.objects.aggregate(Min('age'),Max('age'))
+Husband.objects.aggregate(young=Min('age'),old=Max('age'))
+Husband.objects.aggregate(res=Max('age')-Min('age'))
+Husband.objects.aggregate(res=Max('age')-Avg('age'))
+Husband.objects.aggregate(Avg('age'))
+Husband.objects.filter(pk__gt=2).aggregate(Avg('age'))
+Husband.objects.filter(pk__gt=2).aggregate(Count('age'))
+Women.objects.filter(pk__gt=2).aggregate(Count('cat_id'))
+Women.objects.aggregate(Count('cat_id'))
+
+Women.objects.values("title", "cat_id") - �������� ��� ����
+Women.objects.values("title","cat_id").get(pk=4)
+Women.objects.values("title", "cat_id").filter(pk=5)
+Women.objects.values("title", "cat__name")
+	w=_
+	w.get(pk=4)
+
+Person.objects.filter(Q(salary__lt=10000)|Q(age__gt=65)).update(is_active=False)
+
+TagPost.objects.annotate(total=Count("tags")).filter(total__gt=0)
+
+������� ���� ������
+from django.db.models.functions import Length
+h=Husband.objects.annotate(len_name=Length("name"))
+for i, x in enumerate(h):
+   ...:     if i==0:
+   ...:         print(list(x.__dict__)[1:])
+   ...:     print(list(x.__dict__.values())[1:])
+
+
+result = Person.objects.annotate(total=Count("id")).values("job")
+result = Person.objects.values("job").annotate(total=Count("id")).filter(salary__gte=50000)
+result = Person.objects.values("job").annotate(salary_avg=Avg("salary"))
+result = Person.objects.values("job").annotate(salary_max=Max("salary"), salary_min=Min("salary")).filter(age__gt=30)
+
+
+result = Post.objects.annotate(length=Length("title")).filter(length__gt=50).count()
+result = Subject.objects.annotate(total=Count("subs")).filter(total__gt=0)
+result = Lector.objects.values("subjects").annotate(total=Count("id")).filter(subjects__volume__gte=16)
+
+
+
+@admin.register(Lector)
+class LectorAdmin(admin.ModelAdmin):
+    list_display=['fio', 'salary', 'is_work']
+    ordering=['-salary']
+    actions=['set_work']
+    
+    @admin.action(description="���������� �����������")
+    def set_work(self, request, queryset):
+        count=queryset.filter(salary__gt=0).update(is_work=True)
+        self.message_user(request,f"���� �������� {count} �������.")
+
+
+
+search_fields=['name__endswith', 'slug__startswith']
+
+ def queryset(self, request, queryset):
+        queryset.annotate(length=Length("content"))
+        if self.value()=="short":
+            return queryset.filter(length__lt=1000)
+
+result = Post.objects.filter(Q(slug__icontains="django")|Q(slug__icontains="python")).count()
