@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+ 
+{% block content %}
+
+
+{% include "includes/nav.html" only with title2='title2' %}
+
+    <h2>{{title}}</h2>
+   {%comment%}{% for m in menu %}
+        <p>{{m}}</p>
+    {% endfor %}{%endcomment%}
+
+    <ul class="list-articles">
+        Menu2
+        <li><a href="{% url 'women:index' %}">Index-Главная</a></li>
+        {% for m2 in menu2 %}
+        {% if not forloop.last %}<li>{% else %}<li class='last'>{% endif %}
+            <li><a href="{% url m2.url_name %}">{{m2.title}}</a></li>
+        {% endfor %}
+    </ul>
+
+    <ul class="list-articles">
+        {%for p in posts%}
+            {%comment%}{% if p.is_published %}{%endcomment%}
+            <li><div class='article-panel'>
+            <p class='first'>Category: {{p.cat.name}}</p>
+            <p>Date: {{p.time_update|date:"d-m-Y H:i:s"}}</p>
+            </div>
+                <li><h2>{{p.title}}</h2></li>
+
+                {% autoescape off %}
+                <li><p>{{p.content|linebreaks|truncatewords:30}}</p></li>
+                {% endautoescape %}
+
+                <div class="clear"></div>
+                
+              
+                <li><a href="{{ p.get_absolute_url }}">To read post</a></li>
+                </li>
+              
+                
+
+                {% if not forloop.last %}
+                    <hr>
+                {% endif %}
+                {%comment%}{% endif %}{%endcomment%}
+        {%endfor%}
+
+        
+<h2>data2</h2>
+        {% if form_data.is_data %}
+            <h1>{{ data2.form_data.username }}</h1>
+        {% endif %}
+    </ul>
+    <hr>
+
+    {% include "includes/nav.html" %}
+{% endblock %}

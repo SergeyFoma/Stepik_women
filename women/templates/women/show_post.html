@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+ 
+
+{% block breadcrumbs %}
+    {% with post1.tags.all as tags %}
+        {% if tags %}
+            <ul class='tags-list'>
+                <li>Tags</li>
+                {% for t in tags %}
+                    <li><a href="{{t.get_absolute_url}}">{{t.tag}}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+{% endblock %}
+
+{% block content %}
+    <h1>{{post1.title}}</h1>
+<p>{{post1.id}}</p>
+<p>{{post1.slug}}</p>
+    {% if post1.photo %}
+        <p><img src="{{post1.photo.url}}" alt=""></p>
+    {% endif %}
+
+    <p>{{post1.content|linebreaks}}</p>
+{% endblock %}
