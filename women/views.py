@@ -129,7 +129,17 @@ def show_post(request, sp_slug):
 
 def addpage(request):
     #return HttpResponse(f"Add post")
-    form=AddPostForm()
+    if request.method=="POST":
+        form=AddPostForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            try:
+                Women.objects.create(**form.cleaned_data)
+                return redirect("women:index")
+            except:
+                form.add_error(None, "Fatal create post")
+    else:
+        form=AddPostForm()
     context={
         'menu':menu2,
         'title':'ADD page',
