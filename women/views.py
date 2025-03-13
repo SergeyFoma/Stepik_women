@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.template.loader import render_to_string
 from women.models import Women, Category, TagPost
 from django.template.defaultfilters import slugify #импортируем любой фильтр
+from women.forms import AddPostForm
 
 #menu = ['о сайте', 'Добавить статью', 'Обратная связь', 'Войти']
 
@@ -127,7 +128,14 @@ def show_post(request, sp_slug):
     #return HttpResponse(f"Post id={post_id}")
 
 def addpage(request):
-    return HttpResponse(f"Add post")
+    #return HttpResponse(f"Add post")
+    form=AddPostForm()
+    context={
+        'menu':menu2,
+        'title':'ADD page',
+        'form':form,
+    }
+    return render(request,"women/addpage.html",context)
 
 def contact(request):
     return HttpResponse(f"Contact - обратная связь")
