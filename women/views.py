@@ -132,12 +132,15 @@ def addpage(request):
     if request.method=="POST":
         form=AddPostForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
-            try:
-                Women.objects.create(**form.cleaned_data)
-                return redirect("women:index")
-            except:
-                form.add_error(None, "Fatal create post")
+            # print(form.cleaned_data)
+            # Это для formFoms
+            # try:
+            #     Women.objects.create(**form.cleaned_data)
+            #     return redirect("women:index")
+            # except:
+            #     form.add_error(None, "Fatal create post")
+            form.save()
+            return redirect("women:index")
     else:
         form=AddPostForm()
     context={
