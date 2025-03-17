@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from women.models import Women, Category, TagPost
 from django.template.defaultfilters import slugify #импортируем любой фильтр
 from women.forms import AddPostForm
+from .forms import UploadFileForm
 
 #menu = ['о сайте', 'Добавить статью', 'Обратная связь', 'Войти']
 
@@ -55,7 +56,21 @@ Quit the server with CTRL-BREAK.''', 'is_published':True},
     #return HttpResponse(t)
     return render(request, 'women/index.html', context)
 
+
+#метод для загрузки файлов
+def handle_uploaded_file(f):
+    with open(f"uploads/{f.name}", "wb+") as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
 def about(request):
+    if request.method=="POST":
+        form=UploadFileForm(request.POST, request.FILES)
+        #handle_uploaded_file(request.FILES['file_upload'])
+        if form.is_valid():
+            handle_uploaded_file(form.cleaned_data['file'])
+    else:
+        form=UploadFileForm()
     title='o сайте'
     float=23.5
     int=24
@@ -67,6 +82,7 @@ def about(request):
         'int':int,
         'url':slugify("My page"),
         'menu2':menu2,
+        "form":form,
     }
     return render(request, "women/about.html", context=data)
 

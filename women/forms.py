@@ -74,3 +74,7 @@ class AddPostForm(forms.ModelForm):
         if len(title)>10:
             raise ValidationError("Длина превышает 10 символов")
         return title
+
+
+class UploadFileForm(forms.Form):
+    file=forms.FileField(label="Файл")
