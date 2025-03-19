@@ -1,5 +1,6 @@
 from django.contrib import admin, messages
-from women.models import Women, Category, TagPost, Husband
+from women.models import Women, Category, TagPost
+from django.utils.safestring import mark_safe
 
 
 class MarriedFilter(admin.SimpleListFilter):
@@ -20,7 +21,9 @@ class MarriedFilter(admin.SimpleListFilter):
 
 @admin.register(Women)
 class WomenAdmin(admin.ModelAdmin):
-    list_display = ["id", "title","slug","cat", "time_create", "is_published","active","brief_info"]#отображаемые поля
+    fields=['title','slug','content','photo','post_photo','cat','husband','tags']
+    readonly_fields=['post_photo']
+    list_display = ["id", "title","post_photo","slug","cat", "time_create", "is_published","active","brief_info"]#отображаемые поля
     list_display_links = ['id', 'title'] #кликабельные поля
     prepopulated_fields={'slug':('title',)}
     ordering=['time_create', 'title']
@@ -29,6 +32,13 @@ class WomenAdmin(admin.ModelAdmin):
     actions=['set_published','set_draft']
     search_fields=['title','cat__name']
     list_filter=[MarriedFilter,'cat__name','is_published']
+    save_on_top=True
+
+    @admin.display(description="Изображение", ordering='content')
+    def post_photo(self, women:Women):
+        if women.photo:
+            return mark_safe(f"<img src='{women.photo.url}'width=50>")
+        return "Без фото"
 
     @admin.display(description="Краткое описание", ordering='content')
     def brief_info(self, women:Women):

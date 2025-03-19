@@ -33,7 +33,9 @@
                 {% endautoescape %}
 
                 <div class="clear"></div>
-                
+                {%if p.photo%}
+                    <li><p><img src="{{p.photo.url}}" alt="{{p.photo.url}}"></p></li>
+                {%endif%}
               
                 <li><a href="{{ p.get_absolute_url }}">To read post</a></li>
                 </li>

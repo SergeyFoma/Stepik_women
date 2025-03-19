@@ -3,10 +3,12 @@ from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpRequest
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.template.loader import render_to_string
-from women.models import Women, Category, TagPost
+from women.models import Women, Category, TagPost, UploadFiles
 from django.template.defaultfilters import slugify #импортируем любой фильтр
 from women.forms import AddPostForm
 from .forms import UploadFileForm
+from django.views import View
+from django.views.generic import TemplateView
 
 #menu = ['о сайте', 'Добавить статью', 'Обратная связь', 'Войти']
 
@@ -24,37 +26,54 @@ cats_db=[
     {"id":"3", "name":"Sport women"},
 ]
 
-def index(request):
-    #t=render_to_string('women/index.html')
-    title='Главная страница'
-    data=[
-        {'id':'1','title':'Qwerty','description':'qwert qwe qwe System check identified no issues (0 silenced).'
-'''January 22, 2025 - 08:20:45
-Django version 3.2.25, using settings 
-Starting development server at http://127.0.0.1:8000/
-Quit the server with CTRL-BREAK.''', 'is_published':True},
-        {'id':'2','title':'2Qwerty','description':'2qwert qwe qwe', 'is_published':False},
-        {'id':'3','title':'3Qwerty','description':'3qwert qwe qwe', 'is_published':True},
-    ]
+# def index(request):
+#     #t=render_to_string('women/index.html')
+#     title='Главная страница'
+#     data=[
+#         {'id':'1','title':'Qwerty','description':'qwert qwe qwe System check identified no issues (0 silenced).'
+# '''January 22, 2025 - 08:20:45
+# Django version 3.2.25, using settings 
+# Starting development server at http://127.0.0.1:8000/
+# Quit the server with CTRL-BREAK.''', 'is_published':True},
+#         {'id':'2','title':'2Qwerty','description':'2qwert qwe qwe', 'is_published':False},
+#         {'id':'3','title':'3Qwerty','description':'3qwert qwe qwe', 'is_published':True},
+#     ]
 
-    data2 = {
-        'form_data': {'is_data': True, 'username': 'root', 'password': '1234'},
-    }
+#     data2 = {
+#         'form_data': {'is_data': True, 'username': 'root', 'password': '1234'},
+#     }
 
-    #posts=Women.objects.filter(is_published=1)
-    posts=Women.published.all().select_related("cat")
-    context={
-        'title':title,
-        #'menu':menu,
-        #'posts':data,
-        'data2':data2,
-        'menu2':menu2,
-        'cat_selected':0,
-        'posts':posts,
-    }
-    #return HttpResponse("Page index")
-    #return HttpResponse(t)
-    return render(request, 'women/index.html', context)
+#     #posts=Women.objects.filter(is_published=1)
+#     posts=Women.published.all().select_related("cat")
+#     context={
+#         'title':title,
+#         #'menu':menu,
+#         #'posts':data,
+#         'data2':data2,
+#         'menu2':menu2,
+#         'cat_selected':0,
+#         'posts':posts,
+#     }
+#     #return HttpResponse("Page index")
+#     #return HttpResponse(t)
+#     return render(request, 'women/index.html', context)
+
+class IndexView(TemplateView):
+    template_name='women/index.html'
+    # extra_context={
+    #     'title':'Главная страница',
+    #     'menu2':menu2,
+    #     'posts':Women.published.all().select_related("cat"),
+    #     'cat_selected':0,
+    # }
+
+    def get_context_data(self,**kwargs):
+        context=super().get_context_data(**kwargs)
+        context['title']='Главнейшая страница'
+        context['menu2']=menu2
+        context['posts']=Women.published.all().select_related("cat")
+        context['cat_selected']=int(self.request.GET.get('cat_id',0))
+        return context
 
 
 #метод для загрузки файлов
@@ -68,7 +87,9 @@ def about(request):
         form=UploadFileForm(request.POST, request.FILES)
         #handle_uploaded_file(request.FILES['file_upload'])
         if form.is_valid():
-            handle_uploaded_file(form.cleaned_data['file'])
+            #handle_uploaded_file(form.cleaned_data['file'])#для forms.Form
+            fp=UploadFiles(file=form.cleaned_data['file'])
+            fp.save()
     else:
         form=UploadFileForm()
     title='o сайте'
@@ -143,28 +164,53 @@ def show_post(request, sp_slug):
     return render(request,"women/show_post.html",data)
     #return HttpResponse(f"Post id={post_id}")
 
-def addpage(request):
-    #return HttpResponse(f"Add post")
-    if request.method=="POST":
-        form=AddPostForm(request.POST)
+# def addpage(request):
+#     #return HttpResponse(f"Add post")
+#     if request.method=="POST":
+#         form=AddPostForm(request.POST,request.FILES)
+#         if form.is_valid():
+#             # print(form.cleaned_data)
+#             # Это для formFoms
+#             # try:
+#             #     Women.objects.create(**form.cleaned_data)
+#             #     return redirect("women:index")
+#             # except:
+#             #     form.add_error(None, "Fatal create post")
+#             form.save()
+#             return redirect("women:index")
+#     else:
+#         form=AddPostForm()
+#     context={
+#         'menu':menu2,
+#         'title':'ADD page',
+#         'form':form,
+#     }
+#     return render(request,"women/addpage.html",context)
+
+
+class AddPage(View):
+    def get(self, request):
+        form=AddPostForm()
+        context={
+            'menu':menu2,
+            'title':'AddPage',
+            'form':form
+        }
+        return render(request,"women/addpage.html",context)
+
+    def post(self, request):
+        form=AddPostForm(request.POST,request.FILES)
         if form.is_valid():
-            # print(form.cleaned_data)
-            # Это для formFoms
-            # try:
-            #     Women.objects.create(**form.cleaned_data)
-            #     return redirect("women:index")
-            # except:
-            #     form.add_error(None, "Fatal create post")
             form.save()
             return redirect("women:index")
-    else:
-        form=AddPostForm()
-    context={
-        'menu':menu2,
-        'title':'ADD page',
-        'form':form,
-    }
-    return render(request,"women/addpage.html",context)
+        context={
+            'menu':menu2,
+            'title':'AddPage',
+            'form':form
+        }
+        return render(request,"women/addpage.html",context)
+
+
 
 def contact(request):
     return HttpResponse(f"Contact - обратная связь")
