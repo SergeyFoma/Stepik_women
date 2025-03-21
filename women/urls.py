@@ -20,6 +20,7 @@ urlpatterns=[
     path('addpage/',views.AddPage.as_view(),name='addpage'),
     path('contact/', views.contact, name='contact'),
     path('login/', views.login, name='login'),
-    path('show_category/<slug:cat_slug>/', views.show_category, name="show_category"),
+    #path('show_category/<slug:cat_slug>/', views.show_category, name="show_category"),
+    path('show_category/<slug:cat_slug>/', views.ShowCategory.as_view(), name="show_category"),
     path('tag/<slug:tag_slug>/', views.show_tag_postlist, name='tag'),
 ]

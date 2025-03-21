@@ -8,7 +8,7 @@ from django.template.defaultfilters import slugify #импортируем лю�
 from women.forms import AddPostForm
 from .forms import UploadFileForm
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 
 #menu = ['о сайте', 'Добавить статью', 'Обратная связь', 'Войти']
 
@@ -58,22 +58,44 @@ cats_db=[
 #     #return HttpResponse(t)
 #     return render(request, 'women/index.html', context)
 
-class IndexView(TemplateView):
-    template_name='women/index.html'
-    # extra_context={
-    #     'title':'Главная страница',
-    #     'menu2':menu2,
-    #     'posts':Women.published.all().select_related("cat"),
-    #     'cat_selected':0,
-    # }
+# class IndexView(TemplateView):
+#     template_name='women/index.html'
+#     # extra_context={
+#     #     'title':'Главная страница',
+#     #     'menu2':menu2,
+#     #     'posts':Women.published.all().select_related("cat"),
+#     #     'cat_selected':0,
+#     # }
 
-    def get_context_data(self,**kwargs):
-        context=super().get_context_data(**kwargs)
-        context['title']='Главнейшая страница'
-        context['menu2']=menu2
-        context['posts']=Women.published.all().select_related("cat")
-        context['cat_selected']=int(self.request.GET.get('cat_id',0))
-        return context
+#     def get_context_data(self,**kwargs):
+#         context=super().get_context_data(**kwargs)
+#         context['title']='Главнейшая страница'
+#         context['menu2']=menu2
+#         context['posts']=Women.published.all().select_related("cat")
+#         context['cat_selected']=int(self.request.GET.get('cat_id',0))
+#         return context
+
+class IndexView(ListView):
+    #model=Women
+    template_name='women/index.html'
+    context_object_name='posts'
+    extra_context={
+        'title':'Главная страница',
+        'menu2':menu2,
+        'posts':Women.published.all().select_related("cat"),
+        'cat_selected':0,
+    }
+
+    # def get_context_data(self, **kwargs):
+    #     context=super().get_context_data(**kwargs)
+    #     context['title']="Главненькая страничка"
+    #     context['menu2']=menu2
+    #     context['posts']=Women.published.all().select_related("cat")
+    #     context['cat_selected']=int(self.request.GET.get('cat_id',0))
+    #     return context
+    
+    def get_queryset(self):
+        return Women.published.all().select_related("cat")
 
 
 #метод для загрузки файлов
@@ -221,20 +243,36 @@ def login(request):
 def page_not_found(request, exception):
     return HttpResponseNotFound("<h2>Page Not Found</h2>")
 
-def show_category(request, cat_slug):
-    category=get_object_or_404(Category, slug=cat_slug)
-    posts=Women.published.filter(cat_id=category.pk).select_related("cat")
-    data={
-        'title':f'Rubrica {category.name}',
-        'menu2':menu2,
-        #'posts':data2,
-        #'cat_selected':cat_id,
-        'cat_selected':category.pk,
-        'category':category,
-        'posts':posts,
-    }
-    #return index(request)
-    return render(request, 'women/index.html', context=data)
+# def show_category(request, cat_slug):
+#     category=get_object_or_404(Category, slug=cat_slug)
+#     posts=Women.published.filter(cat_id=category.pk).select_related("cat")
+#     data={
+#         'title':f'Rubrica {category.name}',
+#         'menu2':menu2,
+#         #'posts':data2,
+#         #'cat_selected':cat_id,
+#         'cat_selected':category.pk,
+#         'category':category,
+#         'posts':posts,
+#     }
+#     #return index(request)
+#     return render(request, 'women/index.html', context=data)
+
+class ShowCategory(ListView):
+    template_name='women/index.html'
+    context_object_name="posts"
+    allow_empty=False
+    def get_queryset(self):
+        return Women.published.filter(cat__slug=self.kwargs['cat_slug']).select_related("cat")
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        cat=context['posts'][0].cat
+        context['title']='Категория - ' + cat.name
+        context['menu2']=menu2
+        context['cat_selected'] = cat.pk
+        return context
+
+    
 
 def show_tag_postlist(request, tag_slug):
     tag=get_object_or_404(TagPost, slug=tag_slug)
