@@ -8,7 +8,7 @@ from django.template.defaultfilters import slugify #импортируем лю�
 from women.forms import AddPostForm
 from .forms import UploadFileForm
 from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView, FormView
+from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 
 #menu = ['о сайте', 'Добавить статью', 'Обратная связь', 'Войти']
 
@@ -246,18 +246,42 @@ class ShowPost(DetailView):
 #         }
 #         return render(request,"women/addpage.html",context)
 
-class AddPage(FormView):
+# class AddPage(FormView):
+#     form_class=AddPostForm
+#     template_name="women/addpage.html"
+#     success_url=reverse_lazy("women:index")
+#     extra_context={
+#         'title':'Добавить статью',
+#         'menu2':menu2,
+#     }
+#     def form_valid(self, form):
+#         form.save()
+#         return super().form_valid(form)
+
+class AddPage(CreateView):
     form_class=AddPostForm
+    #model=Women
+    #fields='__all__'
+    template_name="women/addpage.html"
+    #success_url=reverse_lazy("women:index")
+    extra_context={
+        'title':'Добавить статью',
+        'menu2':menu2,
+    }
+class UpdataPage(UpdateView):
+    model=Women
+    fields=['title', 'content', 'photo', 'is_published', 'cat']
     template_name="women/addpage.html"
     success_url=reverse_lazy("women:index")
     extra_context={
         'title':'Добавить статью',
         'menu2':menu2,
     }
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
 
+class DeletePage(DeleteView):
+    model=Women
+    template_name="women/deletepage.html"
+    success_url=reverse_lazy("women:index")
 
 
 def contact(request):

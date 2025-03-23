@@ -23,4 +23,6 @@
     {% endif %}
 
     <p>{{post1.content|linebreaks}}</p>
+
+    <p><a href="{% url 'women:deletepage' pk=post1.id %}">Delete post</a></p>
 {% endblock %}

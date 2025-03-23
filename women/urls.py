@@ -24,5 +24,7 @@ urlpatterns=[
     #path('show_category/<slug:cat_slug>/', views.show_category, name="show_category"),
     path('show_category/<slug:cat_slug>/', views.ShowCategory.as_view(), name="show_category"),
     #path('tag/<slug:tag_slug>/', views.show_tag_postlist, name='tag'),
-    path('tag/<slug:tag_slug>/', views.ShowTagPostlist.as_view(), name='tag')
+    path('tag/<slug:tag_slug>/', views.ShowTagPostlist.as_view(), name='tag'),
+    path('edit/<int:pk>/', views.UpdataPage.as_view(), name='edit_page'),
+    path('deletepage/<int:pk>/', views.DeletePage.as_view(), name='deletepage'),
 ]
