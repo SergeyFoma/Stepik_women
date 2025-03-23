@@ -15,12 +15,14 @@ urlpatterns=[
     #re_path(r'^arhive/(?P<year>[0-9]{4})',views.arhive, name='arhive'),
     path('arhive/<year4:year>/', views.arhive, name='arhive'),
     path('post_detail/', views.post_detail, name='post_detail'),
-    path('show_post/<slug:sp_slug>/', views.show_post, name='show_post'),
+    #path('show_post/<slug:sp_slug>/', views.show_post, name='show_post'),
+    path('show_post/<slug:sp_slug>/', views.ShowPost.as_view(),name='show_post'),
     #path('addpage/', views.addpage, name='addpage'),
     path('addpage/',views.AddPage.as_view(),name='addpage'),
     path('contact/', views.contact, name='contact'),
     path('login/', views.login, name='login'),
     #path('show_category/<slug:cat_slug>/', views.show_category, name="show_category"),
     path('show_category/<slug:cat_slug>/', views.ShowCategory.as_view(), name="show_category"),
-    path('tag/<slug:tag_slug>/', views.show_tag_postlist, name='tag'),
+    #path('tag/<slug:tag_slug>/', views.show_tag_postlist, name='tag'),
+    path('tag/<slug:tag_slug>/', views.ShowTagPostlist.as_view(), name='tag')
 ]

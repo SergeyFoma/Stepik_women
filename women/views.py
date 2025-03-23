@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpRequest
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.template.loader import render_to_string
 from women.models import Women, Category, TagPost, UploadFiles
@@ -8,7 +8,7 @@ from django.template.defaultfilters import slugify #импортируем лю�
 from women.forms import AddPostForm
 from .forms import UploadFileForm
 from django.views import View
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView, FormView
 
 #menu = ['о сайте', 'Добавить статью', 'Обратная связь', 'Войти']
 
@@ -174,17 +174,31 @@ def post_detail(request):
 def page_not_found(request, exception):
     return HttpResponseNotFound("<h2>Страница не найдена</h2>")
 
-def show_post(request, sp_slug):
-    post1=get_object_or_404(Women, slug=sp_slug)
-    print(post1.slug)
-    data={
-        'title':post1.title,
-        'menu2':menu2,
-        'post1':post1,
-        'cat_selected':1,
-    }
-    return render(request,"women/show_post.html",data)
-    #return HttpResponse(f"Post id={post_id}")
+# def show_post(request, sp_slug):
+#     post1=get_object_or_404(Women, slug=sp_slug)
+#     print(post1.slug)
+#     data={
+#         'title':post1.title,
+#         'menu2':menu2,
+#         'post1':post1,
+#         'cat_selected':1,
+#     }
+#     return render(request,"women/show_post.html",data)
+#     #return HttpResponse(f"Post id={post_id}")
+
+class ShowPost(DetailView):
+    model=Women
+    template_name="women/show_post.html"
+    slug_url_kwarg='sp_slug'
+    context_object_name='post1'
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context['title']=context['post1'].title
+        context['menu2']=menu2
+        return context
+    def get_object(self, queryset=None):
+        return get_object_or_404(Women.published, slug=self.kwargs[self.slug_url_kwarg])
+
 
 # def addpage(request):
 #     #return HttpResponse(f"Add post")
@@ -210,27 +224,39 @@ def show_post(request, sp_slug):
 #     return render(request,"women/addpage.html",context)
 
 
-class AddPage(View):
-    def get(self, request):
-        form=AddPostForm()
-        context={
-            'menu':menu2,
-            'title':'AddPage',
-            'form':form
-        }
-        return render(request,"women/addpage.html",context)
+# class AddPage(View):
+#     def get(self, request):
+#         form=AddPostForm()
+#         context={
+#             'menu':menu2,
+#             'title':'AddPage',
+#             'form':form
+#         }
+#         return render(request,"women/addpage.html",context)
 
-    def post(self, request):
-        form=AddPostForm(request.POST,request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect("women:index")
-        context={
-            'menu':menu2,
-            'title':'AddPage',
-            'form':form
-        }
-        return render(request,"women/addpage.html",context)
+#     def post(self, request):
+#         form=AddPostForm(request.POST,request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("women:index")
+#         context={
+#             'menu':menu2,
+#             'title':'AddPage',
+#             'form':form
+#         }
+#         return render(request,"women/addpage.html",context)
+
+class AddPage(FormView):
+    form_class=AddPostForm
+    template_name="women/addpage.html"
+    success_url=reverse_lazy("women:index")
+    extra_context={
+        'title':'Добавить статью',
+        'menu2':menu2,
+    }
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
 
 
@@ -274,13 +300,29 @@ class ShowCategory(ListView):
 
     
 
-def show_tag_postlist(request, tag_slug):
-    tag=get_object_or_404(TagPost, slug=tag_slug)
-    posts=tag.tags.filter(is_published=Women.Status.PUBLISHED)
-    data={
-        'title':f'Tag: {tag.tag}',
-        'menu2':menu2,
-        'posts':posts,
-        'cat_selected': None
-    }
-    return render(request, 'women/index.html', context=data)
+# def show_tag_postlist(request, tag_slug):
+#     tag=get_object_or_404(TagPost, slug=tag_slug)
+#     posts=tag.tags.filter(is_published=Women.Status.PUBLISHED)
+#     data={
+#         'title':f'Tag: {tag.tag}',
+#         'menu2':menu2,
+#         'posts':posts,
+#         'cat_selected': None
+#     }
+#     return render(request, 'women/index.html', context=data)
+
+class ShowTagPostlist(ListView):
+    template_name='women/index.html'
+    context_object_name='posts'
+    allow_empty=False
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        tag=TagPost.objects.get(slug=self.kwargs['tag_slug'])
+        context['title']=f'Tag: {tag.tag}'
+        context['menu2']=menu2
+        #context['posts']=posts
+        context['cat_selected']=None
+        return context
+
+    def get_queryset(self):
+        return Women.published.filter(tags__slug=self.kwargs['tag_slug']).select_related('cat')

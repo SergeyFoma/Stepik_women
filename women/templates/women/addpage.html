@@ -42,6 +42,12 @@
         <div class="form-error">{{form.husband.errors}}</div>
         <button type='submit'>To send</button>
     </form>{%endcomment%}
+    <hr>
+
+    {%for m in menu2%}
+        {{m.title}}
+        {{m.url}}
+    {%endfor%}
 
     <hr>
 
