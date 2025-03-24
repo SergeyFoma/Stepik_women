@@ -136,3 +136,30 @@ search_fields=['name__endswith', 'slug__startswith']
             return queryset.filter(length__lt=1000)
 
 result = Post.objects.filter(Q(slug__icontains="django")|Q(slug__icontains="python")).count()
+
+
+#CreateView
+#метод сохранения и проверки валидности формы, присвоение salary=11000
+class CreateLector(CreateView):
+    model=Lector
+    fields=['fio', 'slug', 'is_work']
+    template_name= 'mgtu/lector_create.html'
+    success_url=reverse_lazy('lector-list')
+    def form_valid(self, form):
+        p=form.save(commit=False)
+        p.salary=11000
+        return super().form_valid(form)
+
+#UpdateView
+class UpdateLector(UpdateView):
+    model=Lector
+    fields=['fio', 'slug', 'salary', 'is_work']
+    template_name='mgu/lector_create.html'
+    success_url=reverse_lazy('lector-list')
+    extra_context= {'title': 'Добавление лектора'}
+
+#DeleteView
+class DeleteLector(DeleteView):
+    model=Lector
+    template_name= 'mgu/lector_delete.html'
+    success_url=reverse_lazy('lector-list')

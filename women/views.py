@@ -260,7 +260,7 @@ class ShowPost(DetailView):
 
 class AddPage(CreateView):
     form_class=AddPostForm
-    #model=Women
+    model=Women
     #fields='__all__'
     template_name="women/addpage.html"
     #success_url=reverse_lazy("women:index")
