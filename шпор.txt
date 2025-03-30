@@ -163,3 +163,36 @@ class DeleteLector(DeleteView):
     model=Lector
     template_name= 'mgu/lector_delete.html'
     success_url=reverse_lazy('lector-list')
+
+
+-----Paginator-----
+from django.core.paginator import Paginator
+
+p=Paginator(women, 3)
+p.count - количество записей
+p.num_pages - количество страниц
+p.page_range - итератор
+p1=p.page(1)
+p1.object_list - вывод записей
+p2=p.page(2)
+p2.object_list
+p2.has_next() - True или False по наличию следующей страницы
+p2.has_previous()
+p2.has_other_pages() - существуют ли вообще страницы
+p2.next_page_number() - номер следующей страницы
+p2.previous_page_number() - номер предыдущей страницы
+
+Подвиг 3. Из входного потока читается список строк с помощью следующей команды:
+lst = list(map(str.strip, input().split(";")))  # эту строчку и переменную lst не менять
+Объявите переменную pages, которая ссылается на объект пагинатора (Paginator) 
+для списка lst с разбиением по 4 элемента на страницу. 
+Используя переменную pages и функцию print, выведите на экран в одну строчку 
+через пробел общее число элементов в списке и общее число страниц.
+
+from django.core.paginator import Paginator
+lst = list(map(str.strip, input().split(";")))  # эту строчку и переменную lst не менять
+pages=Paginator(lst,3)
+a=[]
+for p in pages.page_range:
+    a.append(p)
+print(*a)

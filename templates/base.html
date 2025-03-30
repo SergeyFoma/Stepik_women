@@ -17,13 +17,15 @@
             <div class="header">
                 <ul id="mainmenu" class="mainmenu">
                 <li class="logo"><a href="{% url 'women:index' %}"><div class="logo"></div></a></li>
-    {% for m in menu %}
+    {% for m in menu2 %}
         {% if not forloop.last %}<li>{% else %}<li class="last">{% endif %}
-            <a href="{% url m.url_name %}">{{m.title}}</a></li>
+            <a href="{% url m.url_name %}"style="color:yellow">{{m.title}}</a></li>
     {% endfor %}
+    
                 </ul>
                 <div class="clear"></div>
             </div>
+
     {% endblock mainmenu %}
     
     
