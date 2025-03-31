@@ -77,13 +77,14 @@ cats_db=[
 #         context['cat_selected']=int(self.request.GET.get('cat_id',0))
 #         return context
 
-class IndexView(ListView):
+class IndexView(DataMixin,ListView):
     #model=Women
     template_name='women/index.html'
     context_object_name='posts'
     #если mixin
     title_page='Главная страница'
     cat_selected=0
+    #paginate_by=5 #перенесли в DataMixin
     # extra_context={
     #     'title':'Главная страница',
     #     'menu2':menu2,
@@ -341,6 +342,7 @@ class ShowCategory(DataMixin, ListView):
     template_name='women/index.html'
     context_object_name="posts"
     allow_empty=False
+    #paginate_by=5 #перенесли в DataMixin
     def get_queryset(self):
         return Women.published.filter(cat__slug=self.kwargs['cat_slug']).select_related("cat")
     def get_context_data(self, **kwargs):
