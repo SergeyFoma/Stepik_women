@@ -15,20 +15,26 @@
     <tr><td valign=top>
     
     {% block mainmenu %}
-            <div class="header">
-                <ul id="mainmenu" class="mainmenu">
+        <div class="header">
+            <ul id="mainmenu" class="mainmenu">
                 <li class="logo"><a href="{% url 'women:index' %}"><div class="logo"></div></a></li>
-    {%comment%}{% get_menu as menu2 %}           
-    {% for m in menu2 %}{%endcomment%}
+                {%comment%}{% get_menu as menu2 %}           
+                {% for m in menu2 %}{%endcomment%}
 
-    {% for m in mainmenu %} <!--context_processor-->
-        {% if not forloop.last %}<li>{% else %}<li class="last">{% endif %}
-            <a href="{% url m.url_name %}"style="color:yellow">{{m.title}}</a></li>
-    {% endfor %}
-    
-                </ul>
-                <div class="clear"></div>
-            </div>
+                {% for m in mainmenu %} <!--context_processor-->
+                    {%comment%}{% if not forloop.last %}<li>{% else %}<li class="last">{% endif %}{%endcomment%}
+                        <li><a href="{% url m.url_name %}"style="color:yellow">{{m.title}}</a></li>
+                {% endfor %}
+
+                {% if user.is_authenticated %}
+                    <li class='last'>{{user.username}} | <a href="{% url 'users:logout_user' %}"style="color:yellow">Exit</a></li>
+                {% else %}
+                    <li class='last'><a href="{% url 'users:login_user' %}"style="color:yellow">Войти</a> | <a href="#">Registration</a></li>
+                {% endif %}
+        
+            </ul>
+            <div class="clear"></div>
+        </div>
 
     {% endblock mainmenu %}
     

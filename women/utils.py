@@ -2,7 +2,7 @@ menu2=[
     {'title':'о сайте', 'url_name':'women:about'},
     {'title':'Добавить статью', 'url_name':'women:addpage'},
     {'title':'Обратная связь', 'url_name':'women:contact'},
-    {'title':'Войти', 'url_name':'women:login'},
+    #{'title':'Войти', 'url_name':'users:login_user'},
     
 ]
 
