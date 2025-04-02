@@ -25,7 +25,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("women.urls", namespace="women")),
     path('__debug__/',include('debug_toolbar.urls')),
+#<<<<<<< HEAD
     path('', include("users.urls", namespace="users")),
+#=======
+    path('', include("users.urls",namespace="users"))
+#>>>>>>> 1950fdc6c22b0fb305be059d47f9c2a0f234da8d
 ]
 
 if settings.DEBUG:

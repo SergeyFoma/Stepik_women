@@ -14,8 +14,8 @@
         Menu2
         <li><a href="{% url 'women:index' %}">Index-Главная</a></li>
         {% for m2 in menu2 %}
-        {% if not forloop.last %}<li>{% else %}<li class='last'>{% endif %}
-            <li><a href="{% url m2.url_name %}">{{m2.title}}</a></li>
+            {% if not forloop.last %}<li>{% else %}<li class='last'>{% endif %}
+                <li><a href="{% url m2.url_name %}">{{m2.title}}</a></li>
         {% endfor %}
     </ul>
 
@@ -60,19 +60,34 @@
 {% endblock %}
 
 {% block navigation %}
-{% if page_obj.has_other_pages %} {%comment%} Проверяем если одна страница то не отображаем {%endcomment%}
-    <nav class='list-pages'>
-        <ul>
-            {% for p in paginator.page_range %}
-            {% if page_obj.number == p %}
-            <li style="color:red">{{p}}</li>
-            {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
-                <li class='page-num'>
-                    <a href="?page={{p}}">{{p}}</a>
-                </li>
-            {% endif %}
-            {% endfor %}
-        </ul>
-    </nav>
-{% endif %}
+    {% if page_obj.has_other_pages %} {%comment%} Проверяем если одна страница то не отображаем {%endcomment%}
+        <nav class='list-pages'>
+            <ul>
+                {% if page_obj.has_previous %}
+                    <li>
+                        <a href="?page={{page_obj.previous_page_number}}">&lt;</a>
+
+                    </li>
+                {%endif%}
+
+                {% for p in paginator.page_range %}
+                    {% if page_obj.number == p %}
+                    <li style="color:red">{{p}}</li>
+                    {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                        <li class='page-num'>
+                            <a href="?page={{p}}">{{p}}</a>
+                    {% endif %}
+                {%endfor%}
+
+                    
+
+                    {% if page_obj.has_next %}
+                            <li>
+                                <a href="?page={{page_obj.next_page_number}}">&gt;</a>
+                            </li>
+                    {% endif %}
+                
+                </ul>
+            </nav>
+    {% endif %}
 {% endblock %}
