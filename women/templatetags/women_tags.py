@@ -2,8 +2,13 @@ from django import template
 import women.views as views
 from women.models import Category, TagPost
 from django.db.models import Count
+from women.utils import menu2
 
 register = template.Library()
+
+@register.simple_tag
+def get_menu():
+    return menu2
 
 #@register.simple_tag()
 @register.simple_tag(name="getcats")
