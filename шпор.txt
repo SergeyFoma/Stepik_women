@@ -196,3 +196,13 @@ a=[]
 for p in pages.page_range:
     a.append(p)
 print(*a)
+
+
+------------functions------
+login()
+logout()
+reverse()
+redirect()
+request()
+render()
+authenticated()
