@@ -23,7 +23,7 @@
         {%for p in posts%}
             {%comment%}{% if p.is_published %}{%endcomment%}
             <li><div class='article-panel'>
-            <p class='first'>Category: {{p.cat.name}}</p>
+            <p class='first'>Category: {{p.cat.name}} | Author: {{ p.author.username|default:"Неизвестен" }}</p>
             <p>Date: {{p.time_update|date:"d-m-Y H:i:s"}}</p>
             </div>
                 <li><h2>{{p.title}}</h2></li>

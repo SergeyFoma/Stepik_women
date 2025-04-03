@@ -11,6 +11,8 @@ from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 from women.utils import DataMixin
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required #для установки ограничений неавторизованным пользователям для функций
+from django.contrib.auth.mixins import LoginRequiredMixin #для установки ограничений неавторизованным пользователям для classes
 
 #menu = ['о сайте', 'Добавить статью', 'Обратная связь', 'Войти']
 
@@ -110,6 +112,8 @@ def handle_uploaded_file(f):
         for chunk in f.chunks():
             destination.write(chunk)
 
+#@login_required #работает с LOGIN_URL
+@login_required(login_url="women:index")#работает без LOGIN_URL имеет приоритет перед LOGIN_URL
 def about(request):
     contact_list=Women.published.all()
     paginator=Paginator(contact_list, 3)
@@ -283,7 +287,7 @@ class ShowPost(DataMixin, DetailView):
 #         form.save()
 #         return super().form_valid(form)
 
-class AddPage(DataMixin, CreateView):
+class AddPage(LoginRequiredMixin, DataMixin, CreateView):
     form_class=AddPostForm
     model=Women
     #fields='__all__'
@@ -295,6 +299,13 @@ class AddPage(DataMixin, CreateView):
     # }
     #DataMixin
     title_page='Добавить статью'
+    login_url="/admin/" #переход для неавторизованного пользователя если без него, то LOGIN_URL
+
+    # функция для сохранения авторов
+    def form_valid(self, form):
+        w=form.save(commit=False)#создаем форму для сохранения в базу но не сохраняем False
+        w.author=self.request.user #достаем авторизованного пользователя
+        return super().form_valid(form)
 
 class UpdataPage(DataMixin, UpdateView):
     model=Women
