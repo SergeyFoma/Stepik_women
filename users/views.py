@@ -33,10 +33,11 @@ class LoginUser(LoginView):
     # def get_success_url(self):#для перенаправления или этот метод или в settings.py 
     #     return reverse_lazy("women:index")
 
-def logout_user(request):
-    logout(request)
-    #return HttpResponse('logout')
-    return HttpResponseRedirect(reverse("users:login_user"))
+#при использовании LOGOUT_REDIRECT_URL функция не нужна
+# def logout_user(request):
+#     logout(request)
+#     #return HttpResponse('logout')
+#     return HttpResponseRedirect(reverse("users:login_user"))
 
 # Create your views here.
 
