@@ -29,7 +29,7 @@
                 {% if user.is_authenticated %}
                     <li class='last'>{{user.username}} | <a href="{% url 'users:logout_user' %}"style="color:yellow">Exit</a></li>
                 {% else %}
-                    <li class='last'><a href="{% url 'users:login_user' %}"style="color:yellow">Войти</a> | <a href="#">Registration</a></li>
+                    <li class='last'><a href="{% url 'users:login_user' %}"style="color:yellow">Войти</a> | <a href="{% url 'users:register' %}">Registration</a></li>
                 {% endif %}
         
             </ul>

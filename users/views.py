@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import AuthenticationForm
+from users.forms import RegisterUserForm
 
 # def login_user(request):
 #     if request.method == "POST":
@@ -39,5 +40,15 @@ class LoginUser(LoginView):
 #     #return HttpResponse('logout')
 #     return HttpResponseRedirect(reverse("users:login_user"))
 
-# Create your views here.
+def register(request):
+    if request.method == 'POST':
+        form = RegisterUserForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return render(request, 'users/register_done.html')
+    else:
+        form = RegisterUserForm()
+    return render(request, 'users/register.html', {'form': form})
 

@@ -213,3 +213,4 @@ LOGIN_URL
 LOGOUT_REDIRECT_URL 
 
 def get_success_url()
+set_password()
