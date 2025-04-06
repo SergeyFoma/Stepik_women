@@ -63,4 +63,5 @@ class RegisterUserForm(UserCreationForm):
                 raise forms.ValidationError("Такой E-mail уже существует!")
             return email
 
-
+class ProfileUserForm(forms.ModelForm):
+    username=forms.CharField(disabled=True,label="Login",widget=forms.TextInput(attrs={'class':'form-input'}))
