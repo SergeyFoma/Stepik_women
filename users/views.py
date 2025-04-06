@@ -32,8 +32,8 @@ class LoginUser(LoginView):
     template_name="users/login_user.html"
     extra_context={"title":"Authorization"}
 
-    # def get_success_url(self):#для перенаправления или этот метод или в settings.py 
-    #     return reverse_lazy("women:index")
+    def get_success_url(self):#для перенаправления или этот метод или в settings.py 
+        return reverse_lazy("women:index")
 
 #при использовании LOGOUT_REDIRECT_URL функция не нужна
 # def logout_user(request):

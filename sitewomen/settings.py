@@ -151,3 +151,8 @@ MEDIA_URL='/media/'
 LOGIN_REDIRECT_URL="women:index"
 LOGOUT_REDIRECT_URL="women:index"
 LOGIN_URL="users:login_user" #если пользователь не авторизован
+
+AUTHENTICATION_BACKENDS=[
+    "django.contrib.auth.backends.ModelBackend",
+    "users.authentication.EmailAuthBackend",
+  ]

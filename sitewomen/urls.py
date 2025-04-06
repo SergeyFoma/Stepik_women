@@ -13,29 +13,27 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from women.views import page_not_found
 from sitewomen import settings
 from django.conf import settings
 from django.conf.urls.static import static
-#from debug_toolbar.toolbar import debug_toolbar_urls
+
+# from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include("women.urls", namespace="women")),
-    path('__debug__/',include('debug_toolbar.urls')),
-#<<<<<<< HEAD
-    path('', include("users.urls", namespace="users")),
-#=======
-    path('', include("users.urls",namespace="users"))
-#>>>>>>> 1950fdc6c22b0fb305be059d47f9c2a0f234da8d
+    path("admin/", admin.site.urls),
+    path("", include("women.urls", namespace="women")),
+    path("__debug__/", include("debug_toolbar.urls")),
+    path("", include("users.urls", namespace="users")),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-handler404=page_not_found
+handler404 = page_not_found
 
-admin.site.site_header="Панель администратора"
-admin.site.index_title="Известные женщины мира"
+admin.site.site_header = "Панель администратора"
+admin.site.index_title = "Известные женщины мира"

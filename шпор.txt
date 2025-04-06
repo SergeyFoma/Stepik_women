@@ -214,3 +214,13 @@ LOGOUT_REDIRECT_URL
 
 def get_success_url()
 set_password()
+
+
+_____________Настройки VSCode_________________
+---------Расширения------------
+Python
+PyLance 
+PyLint 
+BlackFormater - для форматирования кода с правилами PEP8 
+Django - Babtict Darthenay 
+ 
