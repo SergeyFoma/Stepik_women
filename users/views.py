@@ -3,14 +3,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from users.forms import LoginUserForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from users.forms import RegisterUserForm
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
 from django.contrib.auth import get_user_model
-from users.forms import ProfileUserForm
+from users.forms import ProfileUserForm, UserPasswordChangeForm
    
 
 
@@ -85,3 +85,8 @@ class ProfileUser(LoginRequiredMixin, UpdateView):#LoginRequiredMixin-досту
         return reverse_lazy("users:profile")
     def get_object(self, queryset=None):
         return self.request.user
+
+class UserPasswordChange(PasswordChangeView):
+    form_class=UserPasswordChangeForm
+    success_url=reverse_lazy("users:password_change_done")
+    template_name="users/password_change_form.html"
