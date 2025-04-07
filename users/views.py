@@ -7,6 +7,12 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from users.forms import RegisterUserForm
 from django.views.generic import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import UpdateView
+from django.contrib.auth import get_user_model
+from users.forms import ProfileUserForm
+   
+
 
 
 # def login_user(request):
@@ -37,10 +43,10 @@ class LoginUser(LoginView):
 
 
 # при использовании LOGOUT_REDIRECT_URL функция не нужна
-def logout_user(request):
-    logout(request)
-    #return HttpResponse('logout')
-    return HttpResponseRedirect(reverse("users:login_user"))
+# def logout_user(request):
+#     logout(request)
+#     #return HttpResponse('logout')
+#     return HttpResponseRedirect(reverse("users:login_user"))
 
 # def register(request):
 #     if request.method == 'POST':
@@ -60,3 +66,22 @@ class RegisterUser(CreateView):
     template_name = "users/register.html"
     extrs_context = {"title": "Регистрация"}
     success_url = reverse_lazy("users:login_user")
+
+# def profile(request):
+#     context={
+
+#     }
+#     return render(request,"users/profile.html", context)
+class ProfileUser(LoginRequiredMixin, UpdateView):#LoginRequiredMixin-доступ к профилю у авторизованных
+                                                #для обновления профиля
+    model=get_user_model()
+    form_class=ProfileUserForm
+    template_name="users/profile.html"
+    extra_context={
+        'title':"Профиль пользователя"
+    }
+    def get_success_url(self):
+        #return reverse_lazy("users:profile", args=[self.request.user.pk])
+        return reverse_lazy("users:profile")
+    def get_object(self, queryset=None):
+        return self.request.user
