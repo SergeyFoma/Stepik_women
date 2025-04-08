@@ -224,3 +224,14 @@ PyLint
 BlackFormater - для форматирования кода с правилами PEP8 
 Django - Babtict Darthenay 
  
+
+_________Settings console E-mail_____
+python manage.py shell_plus
+
+>>> from django.core.mail import send_mail
+>>> send_mail("From Sergey",
+...     "Have a nice day",
+...     "asd@as.as",
+...     ["asdfg2105@mail.ru"]
+... )
+____________________________________________________________________

@@ -78,6 +78,7 @@ class ProfileUserForm(forms.ModelForm):
             'last_name':forms.TextInput(attrs={'class':'form-input'}),
         }
 
+#смена пароля -password change
 class UserPasswordChangeForm(PasswordChangeForm):
     old_password=forms.CharField(label="Старый пароль", widget=forms.PasswordInput(attrs={"class":"form-input"}))
     new_password1=forms.CharField(label="Новый пароль", widget=forms.PasswordInput(attrs={"class":"form-input"}))
