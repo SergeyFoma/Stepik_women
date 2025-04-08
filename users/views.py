@@ -86,6 +86,7 @@ class ProfileUser(LoginRequiredMixin, UpdateView):#LoginRequiredMixin-досту
     def get_object(self, queryset=None):
         return self.request.user
 
+#смена пароля -password change
 class UserPasswordChange(PasswordChangeView):
     form_class=UserPasswordChangeForm
     success_url=reverse_lazy("users:password_change_done")
