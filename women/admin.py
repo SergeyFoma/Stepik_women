@@ -54,10 +54,11 @@ class WomenAdmin(admin.ModelAdmin):
         count=queryset.update(is_published=Women.Status.DRAFT)
         self.message_user(request, f"{count} записей снято с публикации", messages.WARNING)
     
-
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display=['id', 'name', 'slug']
     list_display_links=['id', 'name']
     prepopulated_fields={'slug':('name',)}
 
-admin.site.register(Category, CategoryAdmin)
+#admin.site.register(Category, CategoryAdmin)
+
