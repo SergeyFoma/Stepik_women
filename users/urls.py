@@ -1,3 +1,5 @@
+from django.urls import path, reverse_lazy 
+from . import views
 from django.contrib.auth.views import (
     LogoutView,
     PasswordChangeView,
@@ -9,6 +11,8 @@ from django.contrib.auth.views import (
 )
 from django.urls import path, reverse_lazy
 from . import views
+
+
 
 app_name = "users"
 

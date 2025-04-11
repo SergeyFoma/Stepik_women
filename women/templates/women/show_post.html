@@ -2,6 +2,11 @@
  
 
 {% block breadcrumbs %}
+    {%comment%}{{perms}}{%endcomment%} <!--Коллекция Django содержит разрешения которыми обладает текущий пользователь-->
+    {% if perms.women.change_women %}
+        <p><a href="{% url 'women:edit_page' post1.pk %}">Редактировать</a></p>
+    {% endif %}
+<!--Tags-->
     {% with post1.tags.all as tags %}
         {% if tags %}
             <ul class='tags-list'>

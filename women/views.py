@@ -13,7 +13,8 @@ from women.utils import DataMixin
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required #для установки ограничений неавторизованным пользователям для функций
 from django.contrib.auth.mixins import LoginRequiredMixin #для установки ограничений неавторизованным пользователям для classes
-
+from django.contrib.auth.mixins import PermissionRequiredMixin #для щграничения прав добавления статьи
+from django.contrib.auth.decorators import permission_required #проверить, есть ли у пользователя определенное разрешение
 #menu = ['о сайте', 'Добавить статью', 'Обратная связь', 'Войти']
 
 # menu2=[
@@ -287,7 +288,7 @@ class ShowPost(DataMixin, DetailView):
 #         form.save()
 #         return super().form_valid(form)
 
-class AddPage(LoginRequiredMixin, DataMixin, CreateView):
+class AddPage(PermissionRequiredMixin,LoginRequiredMixin, DataMixin, CreateView):
     form_class=AddPostForm
     model=Women
     #fields='__all__'
@@ -300,14 +301,14 @@ class AddPage(LoginRequiredMixin, DataMixin, CreateView):
     #DataMixin
     title_page='Добавить статью'
     login_url="/admin/" #переход для неавторизованного пользователя если без него, то LOGIN_URL
-
+    permission_required="women.add_women" #PermissionRequiredMixin dолжны указать разрешение (или итерируемый набор разрешений) 
     # функция для сохранения авторов
     def form_valid(self, form):
         w=form.save(commit=False)#создаем форму для сохранения в базу но не сохраняем False
         w.author=self.request.user #достаем авторизованного пользователя
         return super().form_valid(form)
 
-class UpdataPage(DataMixin, UpdateView):
+class UpdataPage(PermissionRequiredMixin,DataMixin, UpdateView):
     model=Women
     fields=['title', 'content', 'photo', 'is_published', 'cat']
     template_name="women/addpage.html"
@@ -318,13 +319,14 @@ class UpdataPage(DataMixin, UpdateView):
     # }
     #DataMixin
     title_page="Редактировать статью"
+    permission_required="women.change_women" #ограничение на добавление статьи
 
 class DeletePage(DeleteView):
     model=Women
     template_name="women/deletepage.html"
     success_url=reverse_lazy("women:index")
 
-
+@permission_required(perm='women.add_women', raise_exception=True)
 def contact(request):
     return HttpResponse(f"Contact - обратная связь")
 
@@ -353,6 +355,7 @@ class ShowCategory(DataMixin, ListView):
     template_name='women/index.html'
     context_object_name="posts"
     allow_empty=False
+    
     #paginate_by=5 #перенесли в DataMixin
     def get_queryset(self):
         return Women.published.filter(cat__slug=self.kwargs['cat_slug']).select_related("cat")

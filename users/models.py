@@ -1,9 +1,10 @@
-#<<<<<<< HEAD
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# Create your models here.
-#=======
-from django.db import models
+class User(AbstractUser):
+    photo=models.ImageField(upload_to="users/%Y/%m/%d",
+                blank=True,null=True,verbose_name="Фото")
+    date_birth=models.DateTimeField(blank=True,
+                null=True,verbose_name="Дата рождения")
 
-# Create your models here.
-#>>>>>>> 1950fdc6c22b0fb305be059d47f9c2a0f234da8d
+

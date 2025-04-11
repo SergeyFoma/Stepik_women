@@ -11,6 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
 from django.contrib.auth import get_user_model
 from users.forms import ProfileUserForm, UserPasswordChangeForm
+from sitewomen import settings
 
 
 # def login_user(request):
@@ -79,7 +80,10 @@ class ProfileUser(
     model = get_user_model()
     form_class = ProfileUserForm
     template_name = "users/profile.html"
-    extra_context = {"title": "Профиль пользователя"}
+    extra_context = {
+        "title": "Профиль пользователя",
+        "default_image":settings.DEFAULT_USER_IMAGE,
+        }
 
     def get_success_url(self):
         # return reverse_lazy("users:profile", args=[self.request.user.pk])

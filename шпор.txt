@@ -235,3 +235,56 @@ python manage.py shell_plus
 ...     ["asdfg2105@mail.ru"]
 ... )
 ____________________________________________________________________
+
+-----------Admin groups permissions--------------
+from users.models import User
+>>> u1=User.objects.get(pk=1) или Permission.objects.get(codename='change_post') Group.objects.get(name='creator')
+>>> u1
+<User: SERGO>
+>>> u1.groups
+<django.db.models.fields.related_descriptors.create_forward_many_to_many_manager.<locals>.ManyRelatedManager
+object at 0x031334F0>
+
+>>> u1.user_permissions
+<django.db.models.fields.related_descriptors.create_forward_many_to_many_manager.<locals>.ManyRelatedManager
+object at 0x031840D0>
+
+>>> u1.has_perm('women.add_women') - проверяем есть ли такое разрешение у user
+True
+>>> u2.has_perm('women.delete_category')
+False
+
+>>> u2.user_permissions.add(1) - добавляем юзеру разрешение
+>>> u2.user_permissions.all() - проверяем какие есть разрешения
+<QuerySet [<Permission: admin | запись в журнале | Can add log entry>, <Permission: women | Известные женщины | Can add Известные женщины>, <Permission: women | Известные женщины | Can change Известные женщины>]>
+
+from django.contrib.auth.models import Group, Permission
+>>> p=Permission.objects.get(codename='add_category') - обозначили категорию
+>>> p
+<Permission: women | Категорию | Can add Категорию>
+
+>>> u2.user_permissions.add(p) - добавили
+>>> u2.user_permissions.all() - проверили
+<QuerySet [<Permission: admin | запись в журнале | Can add log entry>, <Permission: women | Категорию | Can add Категорию>, <Permission: women | Известные женщины | Can add Известные женщины>, <Permission: women | Известные женщины | Can change Известные женщины>]>
+>>>
+
+>>> g=Group.objects.get(pk=1)
+>>> g
+<Group: moderator>
+>>> g=Group.objects.get(name='moderator')
+>>> g
+<Group: moderator>
+>>> u2.groups.add(g)
+>>> u2.groups.all()
+<QuerySet [<Group: moderator>]>
+
+>>> u2.groups.remove(1)
+>>> u2.groups.all()
+<QuerySet []>
+
+
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
+            -------добавляем своё разрешение--------------
+>>> content_type=ContentType.objects.get_for_model(User)
+>>> permission=Permission.objects.create(codename='social_auth',name='Social Auth',content_type=content_type)
