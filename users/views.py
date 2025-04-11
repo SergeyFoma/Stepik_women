@@ -42,10 +42,10 @@ class LoginUser(LoginView):
 
 
 # при использовании LOGOUT_REDIRECT_URL функция не нужна
-# def logout_user(request):
-#     logout(request)
-#     #return HttpResponse('logout')
-#     return HttpResponseRedirect(reverse("users:login_user"))
+def logout_user(request):
+    logout(request)
+    #return HttpResponse('logout')
+    return HttpResponseRedirect(reverse("users:login_user"))
 
 # def register(request):
 #     if request.method == 'POST':
