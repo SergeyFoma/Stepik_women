@@ -288,3 +288,11 @@ from django.contrib.contenttypes.models import ContentType
             -------добавляем своё разрешение--------------
 >>> content_type=ContentType.objects.get_for_model(User)
 >>> permission=Permission.objects.create(codename='social_auth',name='Social Auth',content_type=content_type)
+
+
+----------------Регистрация и вход через соц.сети--------------------
+Django-Allauth
+Django-social_auth
+Python-Social-Auth
+_______________________________________________________________________
+
