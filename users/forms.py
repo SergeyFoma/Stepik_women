@@ -66,7 +66,7 @@ class RegisterUserForm(UserCreationForm):
 
 class ProfileUserForm(forms.ModelForm):
     username=forms.CharField(disabled=True,label="Login",widget=forms.TextInput(attrs={'class':'form-input'}))
-    email=forms.CharField(disabled=True,label="Email",widget=forms.TextInput(attrs={'class':'form-input'}))
+    email=forms.CharField(disabled=True,required=False, label="Email",widget=forms.TextInput(attrs={'class':'form-input'}))
     this_year=datetime.date.today().year
     date_birth=forms.DateField(widget=forms.SelectDateWidget(years=tuple(range(this_year-100, this_year-5))))
     class Meta:
