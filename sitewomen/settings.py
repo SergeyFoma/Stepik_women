@@ -51,6 +51,8 @@ INSTALLED_APPS = [
 
     'women.apps.WomenConfig',
     'users.apps.UsersConfig',
+
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -153,6 +155,7 @@ LOGOUT_REDIRECT_URL="women:index"
 LOGIN_URL="users:login_user" #если пользователь не авторизован
 
 AUTHENTICATION_BACKENDS=[
+    'social_core.backends.github.GithubOAuth2',
     "django.contrib.auth.backends.ModelBackend",
     "users.authentication.EmailAuthBackend",
   ]
@@ -173,3 +176,5 @@ EMAIL_ADMIN=EMAIL_HOST_USER
 AUTH_USER_MODEL = "users.User" #при переопределении таблицы authuser удалить все миграции и базу и создать заново
 
 DEFAULT_USER_IMAGE = MEDIA_URL + "users/default.jpg"
+
+#SOCIAL_AUTH_JSONFIELD_ENABLED = True # для PostgreSQL
