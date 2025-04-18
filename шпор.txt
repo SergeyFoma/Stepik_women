@@ -296,3 +296,8 @@ Django-social_auth
 Python-Social-Auth
 _______________________________________________________________________
 
+----------------------Переход на https--------------------
+C:\Windows\System32\drivers\etc\hosts
+127.0.0.1:8000 sitewomen.ru
+win+R cmd ping sitewomen.ru
+settings.py - ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'sitewomen.ru']
