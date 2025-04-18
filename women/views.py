@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.template.loader import render_to_string
 from women.models import Women, Category, TagPost, UploadFiles
 from django.template.defaultfilters import slugify #импортируем любой фильтр
-from women.forms import AddPostForm
+from women.forms import AddPostForm, ContactForm
 from .forms import UploadFileForm
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
@@ -326,9 +326,18 @@ class DeletePage(DeleteView):
     template_name="women/deletepage.html"
     success_url=reverse_lazy("women:index")
 
-@permission_required(perm='women.add_women', raise_exception=True)
-def contact(request):
-    return HttpResponse(f"Contact - обратная связь")
+# @permission_required(perm='women.add_women', raise_exception=True)
+# def contact(request):
+#     return HttpResponse(f"Contact - обратная связь") 
+class ContactFormView(LoginRequiredMixin, DataMixin, FormView):
+    form_class=ContactForm 
+    template_name="women/contact.html"
+    success_url=reverse_lazy("women:index")
+    title_page="Обратная связь - feedback"
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return super().form_valid(form)
 
 def login(request):
     return HttpResponse(f"Login")

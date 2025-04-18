@@ -1,3 +1,4 @@
+from captcha.fields import CaptchaField
 from django import forms
 from women.models import Category, Husband,Women
 from django.core.validators import MinLengthValidator, MaxLengthValidator
@@ -78,3 +79,9 @@ class AddPostForm(forms.ModelForm):
 
 class UploadFileForm(forms.Form):
     file=forms.FileField(label="Файл")
+
+class ContactForm(forms.Form):
+    name=forms.CharField(label="Name", max_length=255)
+    email=forms.EmailField(label="Email")
+    contact=forms.CharField(widget=forms.Textarea(attrs={"cols":60, "rows":10}))
+    captcha=CaptchaField()
