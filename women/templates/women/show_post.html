@@ -3,10 +3,17 @@
 
 {% block breadcrumbs %}
     {%comment%}{{perms}}{%endcomment%} <!--Коллекция Django содержит разрешения которыми обладает текущий пользователь-->
+    author_id={{post1.author_id}} | user.id={{user.id}}
+    {% if user.is_authenticated and request.user == post1.author %}
     
+        <h2>Author post={{user.id}}</h2>
+    
+    
+
     {% if perms.women.change_women %}
         <p><a href="{% url 'women:edit_page' post1.pk %}">Редактировать</a></p>
     {% endif %}
+    {%endif%}
    
 <!--Tags-->
     {% with post1.tags.all as tags %}
