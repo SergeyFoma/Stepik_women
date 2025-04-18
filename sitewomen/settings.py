@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-xbe)$96&m%lq4i)3p_7ba8*9zwuf@=i+5pq&lq9)9pt1vblm^b
 DEBUG = True
 #DEBUG = False #что бы работала статика надо запускать сервер - python manage.py runserver --insecure
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'sitewomen.ru']
 #ALLOWED_HOSTS = ['127.0.0.1']
 
 INTERNAL_IPS = [
@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
 
     'social_django',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -94,10 +95,20 @@ WSGI_APPLICATION = 'sitewomen.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        'NAME': 'sitewomen_db',
+        'USER': 'sitewomen',
+        'PASSWORD': '11111qqqqq',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -195,3 +206,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
+
+CAPTCHA_FONT_SIZE=44
+CAPTCHA_IMAGE_SIZE=(200,80)
+CAPTCHA_BACKGROUND_COLOR="yellow"
