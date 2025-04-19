@@ -54,6 +54,9 @@ INSTALLED_APPS = [
 
     'social_django',
     'captcha',
+
+    'django.contrib.sites',#управляет глобальными настройками карты сайта
+    'django.contrib.sitemaps', #формирует карту сайта
 ]
 
 MIDDLEWARE = [
@@ -223,3 +226,5 @@ SOCIAL_AUTH_PIPELINE = (
 CAPTCHA_FONT_SIZE=44
 CAPTCHA_IMAGE_SIZE=(200,80)
 CAPTCHA_BACKGROUND_COLOR="yellow"
+
+SITE_ID=1 # для карты сайта

@@ -20,9 +20,14 @@ from women.views import page_not_found
 from sitewomen import settings
 from django.conf import settings
 from django.conf.urls.static import static
-
+from django.contrib.sitemaps.views import sitemap
+from women.sitemaps import PostSitemap, CategorySitemap
+from django.views.decorators.cache import cache_page
 # from debug_toolbar.toolbar import debug_toolbar_urls
-
+sitemaps={
+    'posts':PostSitemap,
+    'cats':CategorySitemap,
+}
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("women.urls", namespace="women")),
@@ -30,6 +35,7 @@ urlpatterns = [
     path("", include("users.urls", namespace="users")),
     path("social-auth/", include('social_django.urls', namespace="social")),
     path("captcha/", include("captcha.urls")),
+    path("sitemap.xml",cache_page(86400) (sitemap),{"sitemaps": sitemaps},name="django.contrib.sitemaps.views.sitemap",)
 ]
 
 if settings.DEBUG:
