@@ -15,6 +15,8 @@ from django.contrib.auth.decorators import login_required #для установ
 from django.contrib.auth.mixins import LoginRequiredMixin #для установки ограничений неавторизованным пользователям для classes
 from django.contrib.auth.mixins import PermissionRequiredMixin #для щграничения прав добавления статьи
 from django.contrib.auth.decorators import permission_required #проверить, есть ли у пользователя определенное разрешение
+from django.core.cache import cache
+
 #menu = ['о сайте', 'Добавить статью', 'Обратная связь', 'Войти']
 
 # menu2=[
@@ -104,7 +106,12 @@ class IndexView(DataMixin,ListView):
     #     return context
     
     def get_queryset(self):
-        return Women.published.all().select_related("cat")
+        w_lst=cache.get("women_posts")
+        if not w_lst:
+            w_lst=Women.published.all().select_related("cat")
+            cache.set('women_posts', w_lst, 60)
+        #return Women.published.all().select_related("cat")
+        return w_lst
 
 
 #метод для загрузки файлов

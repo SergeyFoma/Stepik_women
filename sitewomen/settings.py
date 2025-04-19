@@ -57,16 +57,21 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+#    "django.middleware.cache.UpdateCacheMiddleware", #для кеширования всего сайта целиком
     'django.middleware.common.CommonMiddleware',
+#    "django.middleware.cache.FetchFromCacheMiddleware", #для кеширования всего сайта целиком
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    #"debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
+# CACHE_MIDDLEWARE_ALIAS ='default' #для кеширования всего сайта целиком
+# CACHE_MIDDLEWARE_SECONDS=10       #для кеширования всего сайта целиком
+# CACHE_MIDDLEWARE_KEY_PREFIX='sitewomen' #для кеширования всего сайта целиком
 
 ROOT_URLCONF = 'sitewomen.urls'
 
@@ -109,6 +114,14 @@ DATABASES = {
         'PASSWORD': '11111qqqqq',
         'HOST': 'localhost',
         'PORT': '5432',
+    }
+}
+
+CACHES = {
+    "default": {
+        #"BACKEND": "django.core.cache.backends.dummy.DummyCache",
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
     }
 }
 
