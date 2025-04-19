@@ -1,6 +1,7 @@
 from django.urls import path, re_path, register_converter
 from women import views
 from . import converters
+from django.views.decorators.cache import cache_page
 
 register_converter(converters.FourDigitYearConverter, "year4")
 
@@ -9,6 +10,7 @@ app_name="women"
 urlpatterns=[
     #path('', views.index, name='index'),
     path('',views.IndexView.as_view(),name='index'),
+    #path('',cache_page(30)(views.IndexView.as_view()),name='index'), #кеш страницы
     path('about/', views.about, name='about'),
     path('categories/<int:cat_id>/', views.categories, name='categories'),
     path('categories_slug/<slug:cat_slug>/', views.categories_slug, name='categories_slug'),
