@@ -26,8 +26,8 @@ SECRET_KEY = 'django-insecure-xbe)$96&m%lq4i)3p_7ba8*9zwuf@=i+5pq&lq9)9pt1vblm^b
 DEBUG = True
 #DEBUG = False #что бы работала статика надо запускать сервер - python manage.py runserver --insecure
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'sitewomen.ru']
-#ALLOWED_HOSTS = ['127.0.0.1']
+#ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'sitewomen.ru']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver']
 
 INTERNAL_IPS = [
     # ...
