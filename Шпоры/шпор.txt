@@ -1,3 +1,7 @@
+
+python --version
+django-admin --version
+
 Category.objects.filter(posts__is_published=0).distinct()
 
 w1.tags.add(t_o) - �������� ���� ������ � �������
