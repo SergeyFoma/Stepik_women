@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound
+from django.template.loader import render_to_string
 
 
 def index(request):
-    return HttpResponse("INDEX")
+    # t=render_to_string('women/index.html')
+    # return HttpResponse(t)
+    return render(request, "women/index.html", {})
 
 
 def categories(request, cat_id):
@@ -25,3 +28,4 @@ def categories_by_slug(request, cat_slug):
 def page_not_found(request, exception):
     print('exception: ', exception)
     return HttpResponseNotFound("<h1>Page not found. Страница не существует.</h1>")
+

@@ -16,3 +16,9 @@ proekts - https://dzen.ru/a/YRK6yvfmrCobkr0y
 
 path converters - https://docs.djangoproject.com/en/6.0/topics/http/urls/#:~:text=converter%28%29%3A
 redirect 302, 301 - https://docs.djangoproject.com/en/6.0/topics/http/shortcuts/#:~:text=permanent%3DTrue%2C%20a%20permanent%20redirect%20is%20issued%20with%20a%20301%20status%20code.
+handler404 = page_not_found
+
+redirect, reverse
+
+HttpResponsePermanentRedirect - редирект с кодом 301
+HttpResponseRedirect - редирект с кодом 302

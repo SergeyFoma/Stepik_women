@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'women/css/style.css' %}">
+</head>
+<body>
+    <div class="header">
+        
+        {% block header %}
+        {% endblock %}
+    </div>
+    <div class="sidebar">
+        {% block sidebar %}
+        {% endblock %}
+    </div>
+    <div class="footer">
+        {% block footer %}
+        {% endblock %}
+    </div>
+</body>
+</html>
