@@ -40,4 +40,23 @@ menu
 {{menu|join:" | "}} объедтняет элементы коллекции в строку с указанным разделителем
 {{menu|length}} определяет длину коллекции или 
 {{The main page|slugify}} переводит строку в skug
+{%autoescape off%} - или on экранирует или включает теги html
+{{p.content|linebreaks|truncatewords:50}}
+{%endautoescape%}
+{% if not forloop.last %} https://docs.djangoproject.com/en/6.0/ref/templates/builtins/#for
+
+from django.templates.defaultfilters import slugify импортируем любой фильтр в views.py и работаем
 https://docs.djangoproject.com/en/6.0/ref/templates/builtins/#:~:text=truncatewords_html
+
+---наследование шаблонов-------
+https://docs.djangoproject.com/en/6.0/ref/templates/builtins/#:~:text=extends%20"./base2.html"%20%25%7D
+{%extends%}
+
+STATIC_URL - префикс URL-адреса для статических файлов
+STATIC_ROOT - путь к общей статической папке формируемой при запуске python manage.py collectstatic
+STATICFILES_DIRS - список нестандартных путей к статическим файлам
+https://docs.djangoproject.com/en/6.0/ref/settings/#:~:text=STATIC_URL
+
+--------------------------------------
+python manage.py runserver --insecure для поиска статики в режиме False
+-------------------------------------
