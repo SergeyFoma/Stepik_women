@@ -20,5 +20,24 @@ handler404 = page_not_found
 
 redirect, reverse
 
+HttpResponse
 HttpResponsePermanentRedirect - редирект с кодом 301
 HttpResponseRedirect - редирект с кодом 302
+
+----------Структура--------------
+menu
+{{key1.value1}}
+{{obj.a}} -class
+
+фильтры - add {{float|add:"50"}}
+{{title|cut:" "|cut:"?"}} удаляет указанные символы
+{{title|upper}}
+{{title:lower}}
+{{title|default:"Без заголовка"}}
+{{title|divisible:"2"}} проверяет кратность числа(деление на цело)
+{{menu|first}} выводит первый элемент списка
+{{menu|last}}  выводит последний элемент списка(коллкции)
+{{menu|join:" | "}} объедтняет элементы коллекции в строку с указанным разделителем
+{{menu|length}} определяет длину коллекции или 
+{{The main page|slugify}} переводит строку в skug
+https://docs.djangoproject.com/en/6.0/ref/templates/builtins/#:~:text=truncatewords_html

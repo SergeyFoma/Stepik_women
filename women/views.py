@@ -2,11 +2,16 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound
 from django.template.loader import render_to_string
 
+menu = ['О сайте', 'Добавить статью', 'Обратная связь', 'Войти']
 
 def index(request):
     # t=render_to_string('women/index.html')
     # return HttpResponse(t)
-    return render(request, "women/index.html", {})
+    context={
+        'title':'Главная страница',
+        'menu':menu,
+    }
+    return render(request, "women/index.html", context)
 
 
 def categories(request, cat_id):

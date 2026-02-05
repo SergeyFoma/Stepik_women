@@ -1,3 +1,10 @@
 {% extends "base.html" %}
 {%load static%}
 
+{%block header%}
+    <div class="menu">
+        {%for m in menu%}
+            {{m}}
+        {%endfor%}
+    </div>
+{%endblock%}
