@@ -66,3 +66,41 @@ inclusion tags – включающие теги.
 Moel fields
 https://docs.djangoproject.com/en/6.0/ref/models/fields/#:~:text=CharField
 
+python manage.py makemigrations
+python manage.py sqlmigrate women 0001
+python manage.py migrate
+
+Register model admin.py
+@admin.register(Women)
+class WomenAdmin(admin.ModelAdmin):
+    pass
+https://docs.djangoproject.com/en/6.0/ref/contrib/admin/#:~:text=register%28Author%29
+https://docs.djangoproject.com/en/6.0/ref/checks/#:~:text=prepopulated_fields%20must%20be%20a%20dictionary.
+
+fields
+list_display=[]
+prepopulated_fields={}
+
+---------------------------CRUD-----------------------
+python manage.py shell
+
+>>> Women(title='Анджелина Джоли', content='Биография Анджелины Джоли')
+<Women: Анджелина Джоли>
+>>> w1=_   ссылка на последний объект
+>>> w1
+<Women: Анджелина Джоли>
+>>> w1.save()
+w1.id
+w1.title
+
+from django.db import connection
+connection.queries  увидим какие sql запросы выполнялись
+connection.queries [-1] последний запрос
+[{'sql': 'INSERT INTO "women_women" ("title", "content", "time_create", "time_update", "is_published") VALUES (\'Анджелина Джоли\', \'Биография Анджелины Джоли\', \'2026-02-09 09:40:24.810033\', \'2026-02-09 09:40:24.810083\', 1) RETURNING "women_women"."id"', 'time': '0.002'}]       
+>>>
+
+w3.title="Anna Kurit"
+w3.content='Anna smoking so match'
+w3.save()
+
+
