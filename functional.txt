@@ -103,4 +103,4 @@ w3.title="Anna Kurit"
 w3.content='Anna smoking so match'
 w3.save()
 
-
+python manage.py shell_plus --print-sql -- будем видеть все запросы django-extensions
