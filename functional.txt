@@ -60,3 +60,9 @@ https://docs.djangoproject.com/en/6.0/ref/settings/#:~:text=STATIC_URL
 --------------------------------------
 python manage.py runserver --insecure для поиска статики в режиме False
 -------------------------------------
+simple tags – простые теги;
+inclusion tags – включающие теги.
+-------------------------------
+Moel fields
+https://docs.djangoproject.com/en/6.0/ref/models/fields/#:~:text=CharField
+
