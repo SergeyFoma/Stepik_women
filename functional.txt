@@ -103,4 +103,26 @@ w3.title="Anna Kurit"
 w3.content='Anna smoking so match'
 w3.save()
 
+Women.objects.create(title="Ума Турман", content="Биография Умы Турман")
+
 python manage.py shell_plus --print-sql -- будем видеть все запросы django-extensions
+
+---------------------Выборка записей--------------
+Women.objects.all()
+Women.objects.all()[2:4]
+w=Women.objects.filter(id=3)
+for i in w:
+    print(i.content)
+
+----------------lookapp-------
+https://docs.djangoproject.com/en/6.0/ref/models/querysets/#:~:text=exact%20lookup%20in
+__gt
+__gte
+__lt
+__lte
+__contains 
+__icontains
+pk__in=[2,4,8]
+
+w=Women.objects.exclude(pk=2) выведет все записи кроме pk=2
+w=Women.objects.get(pk=3)
