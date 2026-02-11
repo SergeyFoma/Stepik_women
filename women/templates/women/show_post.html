@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+    <h1>{{pos.title}}</h1>
+    <h2>{{pos.slug}}</h2>
+    <p>{{pos.content|linebreaks }}</p>
+{% endblock %}
