@@ -114,6 +114,32 @@ w=Women.objects.filter(id=3)
 for i in w:
     print(i.content)
 
+---------------Сортировка записей-------------
+https://docs.djangoproject.com/en/6.0/ref/models/querysets/#:~:text=order_by%28%29
+https://docs.djangoproject.com/en/6.0/ref/models/options/#django.db.models.Options.ordering
+
+Women.objects.order_by('title')
+Women.objects.order_by('-title')
+Women.objects.filter(pk__lte=5).order_by('title')
+
+--------------Изменение записей-------------
+w=Women.objects.get(pk=3)
+w.title='Anna Nokurit'
+w.content='Anna Nokurit'
+w.save()
+
+ Women.objects.update(is_published=0)
+ Women.objects.filter(pk__lte=4).update(is_published=1) -- применяется для коллекций queryset
+
+--------------Удаление записей---------------
+Women.objects.filter(pk__gte=4).delete()
+
+w=Women.objects.filter(pk__gte=4)
+w.delete()
+
+w=Women.objects.get(pk=1)
+w.delete()
+
 ----------------lookapp-------
 https://docs.djangoproject.com/en/6.0/ref/models/querysets/#:~:text=exact%20lookup%20in
 __gt
@@ -126,3 +152,22 @@ pk__in=[2,4,8]
 
 w=Women.objects.exclude(pk=2) выведет все записи кроме pk=2
 w=Women.objects.get(pk=3)
+
+
+----------------------Fields----------------
+SlugField  -https://docs.djangoproject.com/en/6.0/ref/models/fields/#slugfield
+
+-----------Добаваление слагов через цикл------------------
+for i in Women.objects.all():
+   i.slug='slug'+str(i.pk)
+   i.save()
+
+
+----------------SHELL commands-----------------------
+python manage.py shell
+python manage.py ipython
+python manage.py shell_plus --print-sql
+
+---------------------------------
+get_absolute_url(self): # https://docs.djangoproject.com/en/6.0/ref/models/instances/#:~:text=get_absolute_url%28%29
+

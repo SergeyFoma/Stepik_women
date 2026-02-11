@@ -5,4 +5,4 @@ from .models import Women  # импортируем нашу модель Women
 # Регистрируем модель через декоратор
 @admin.register(Women)
 class WomenAdmin(admin.ModelAdmin):
-    pass
+    prepopulated_fields={'slug':('title',)}
