@@ -35,7 +35,11 @@ class Women(models.Model):
     published=PublishedManager()
 =======
     is_published = models.BooleanField(default=True, verbose_name='Опубликована')
+<<<<<<< HEAD
     cat=models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name='Категория',blank=True,null=True)
+>>>>>>> new_branch
+=======
+    cat=models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name='Категория',related_name='posts',blank=True,null=True)
 >>>>>>> new_branch
 
     def __str__(self):
