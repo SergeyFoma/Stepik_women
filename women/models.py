@@ -15,7 +15,7 @@ class Women(models.Model):
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     time_update = models.DateTimeField(auto_now=True, verbose_name='Дата последнего редактирования')
     is_published = models.BooleanField(default=True, verbose_name='Опубликована')
-    cat=models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name='Категория',blank=True,null=True)
+    cat=models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name='Категория',related_name='posts',blank=True,null=True)
 
     def __str__(self):
         return self.title

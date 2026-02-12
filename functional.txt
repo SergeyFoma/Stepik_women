@@ -181,10 +181,34 @@ Many To One - ForeignKey   - https://docs.djangoproject.com/en/6.0/ref/models/fi
 cat=models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name='Категория')
 Women.objects.all().update(cat_id=1)
 
-w=Women.objects.get(pk=1)
-w.cat
-w.cat_id
-w.cat.name
 
 -----------------------ORM-------------------
 
+w=Women.objects.get(pk=1)
+w.title
+w.content
+w.cat
+w.cat_id
+w.cat.name
+w.cat.slug
+
+c=Category.objects.get(pk=1)
+c.women_set
+c.women_set.all()
+
+------добавляем related_name в поле ForeignKey------
+c=Category.objects.get(pk=1)
+c.posts 
+c.posts.all()
+
+Women.objects.filter(cat_id__in=[1,2])
+
+c=Category.objects.all()
+w=Women.objects.filter(cat__in=c)
+w
+
+Women.objects.filter(cat__slug='actrisy')
+Women.objects.filter(cat__name__contains="цы")
+Category.objects.filter(posts__title__contains="эй")
+Category.objects.filter(posts__title__contains="эй").distinct() - отбирает уникальные сатегории не повторяющиеся
+Category.objects.filter(posts__title__contains="a").distinct()
