@@ -105,6 +105,9 @@ w3.save()
 
 Women.objects.create(title="Ума Турман", content="Биография Умы Турман")
 
+c=Category(name='Певицы', slug='pevici')      
+c.save()
+
 python manage.py shell_plus --print-sql -- будем видеть все запросы django-extensions
 
 ---------------------Выборка записей--------------
@@ -171,6 +174,7 @@ python manage.py shell_plus --print-sql
 ---------------------------------
 get_absolute_url(self): # https://docs.djangoproject.com/en/6.0/ref/models/instances/#:~:text=get_absolute_url%28%29
 
+<<<<<<< HEAD
 ----------------Самописный Manager-----------------------
 # https://docs.djangoproject.com/en/6.0/topics/db/managers/
 # https://github.com/django/django/blob/stable/6.0.x/django/db/models/manager.py#L176
@@ -183,3 +187,19 @@ w.update(is_published=Women.Status.DRAFT)
 Women.Status.choices
 Women.Status.labels
 Women.Status.values
+=======
+
+------------------Связи между таблицами----------------------
+Many To One - ForeignKey   - https://docs.djangoproject.com/en/6.0/ref/models/fields/#foreignkey
+
+cat=models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name='Категория')
+Women.objects.all().update(cat_id=1)
+
+w=Women.objects.get(pk=1)
+w.cat
+w.cat_id
+w.cat.name
+
+-----------------------ORM-------------------
+
+>>>>>>> new_branch
