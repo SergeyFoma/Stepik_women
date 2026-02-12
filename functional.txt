@@ -171,3 +171,15 @@ python manage.py shell_plus --print-sql
 ---------------------------------
 get_absolute_url(self): # https://docs.djangoproject.com/en/6.0/ref/models/instances/#:~:text=get_absolute_url%28%29
 
+----------------Самописный Manager-----------------------
+# https://docs.djangoproject.com/en/6.0/topics/db/managers/
+# https://github.com/django/django/blob/stable/6.0.x/django/db/models/manager.py#L176
+Прописывам в models.py
+
+choices - https://docs.djangoproject.com/en/6.0/ref/models/fields/#:~:text=choices
+
+w.update(is_published=Women.Status.DRAFT)
+
+Women.Status.choices
+Women.Status.labels
+Women.Status.values

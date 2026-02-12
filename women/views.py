@@ -12,7 +12,9 @@ menu = ["О сайте", "Добавить статью", "Обратная св
 def index(request):
     # t=render_to_string('women/index.html')
     # return HttpResponse(t)
-    posts = Women.objects.filter(is_published=1)
+
+    # posts = Women.objects.filter(is_published=1)
+    posts=Women.published.all() # выведет только опубликованные статьи
     context = {
         "title": "Главная страница",
         "menu": menu,
