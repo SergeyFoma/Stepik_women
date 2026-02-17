@@ -7,6 +7,10 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+    # def get_absolute_url(self):
+    #     return reverse("category", kwargs={"cat_slug": self.slug})
+    
 
 class Women(models.Model):
     title = models.CharField(max_length=255, verbose_name='Заголовок')

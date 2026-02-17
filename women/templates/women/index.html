@@ -13,8 +13,13 @@
     {% include 'women/includes/nav.html' %}
     {%for i in posts%}
     {%comment%}<a href="{% url 'women:show_post' post_slug=i.slug %}">{{i.title}}</a>{%endcomment%}
-    <h2><a href="{{i.get_absolute_url}}">{{i.title}}</a></h2>
-        
-    
+        <h2><a href="{{i.get_absolute_url}}">{{i.title}}</a></h2>
+        <p>Категория: {{i.cat.name}}</p>
+        <p>Дата обновления: {{i.time_update|date:"d-m-Y H:i:s"}}</p>    
     {%endfor%}
+    
+{%for c in cat%}
+    <p><a href="url 'women:category' cat_slug=c.slug">Category: {{c.name}}</a></p>
+{%endfor%}
+
 {% endblock %}
