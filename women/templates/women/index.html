@@ -19,7 +19,7 @@
     {%endfor%}
     
 {%for c in cat%}
-    <p><a href="url 'women:category' cat_slug=c.slug">Category: {{c.name}}</a></p>
+    <p><a href="url 'women:show_category' cat_slug=c.slug">Category: {{c.name}}</a></p>
 {%endfor%}
 
 {% endblock %}
