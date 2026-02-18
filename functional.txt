@@ -230,3 +230,17 @@ Category.objects.filter(posts__title__contains="эй")
 Category.objects.filter(posts__title__contains="эй").distinct() - отбирает уникальные сатегории не повторяющиеся
 Category.objects.filter(posts__title__contains="a").distinct()
 >>>>>>> new_branch
+
+
+a=Women.objects.get(id=1)
+t4=TagPost.objects.create(tag='Niz',slug='niz')
+tag_b=TagPost.objects.all()[1]
+tag_o, tag_s = TagPost.objects.filter(id__in=[3,5])
+a.tags.set([tag_b, tag_o, tag_s]) добавляем все теги
+a.tags.remove(tag_o) удалить тег
+a.tags.add(tag_b) добавить тег
+a.tags.all()
+a.tags.filter(id=3)
+
+t7=TagPost.objects.get(id=7)
+t7.tags.all() узнаем с какими статьями связан тег t7 через related_name='tags' в модели Women
