@@ -94,9 +94,4 @@ class Women(models.Model):
         return reverse("women:show_post", kwargs={"post_slug": self.slug})
 
 
-# class TagPost(models.Model):
-#     tag = models.CharField(max_length=100, db_index=True)
-#     slug = models.SlugField(max_length=255, db_index=True, unique=True)
 
-#     def __str__(self):
-#         return self.tag
